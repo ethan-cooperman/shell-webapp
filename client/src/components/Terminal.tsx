@@ -19,6 +19,22 @@ function Terminal() {
     }
   }, [entries]);
 
+  // set input to focus whenever user clicks
+  useEffect(() => {
+    const handleClick = () => {
+      if (terminalInputRef.current) {
+        terminalInputRef.current.focus();
+      }
+    };
+
+    // add click event listener to entire document
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     // ignore defaults
     e.preventDefault();
@@ -38,7 +54,11 @@ function Terminal() {
       // for now, just update the entries array
       setEntries((prevEntries) => [
         ...prevEntries,
-        { input: inputValue, output: "Not Yet Implemented", isError: false },
+        {
+          input: inputValue,
+          output: "Not Yet Implemented",
+          isError: false,
+        },
       ]);
     }
   }
