@@ -1,10 +1,13 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ReactEventHandler } from "react";
 import { TerminalEntry } from "@/types/terminalEntry";
 
 function Terminal() {
   // state for entries list
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
+
+  // index in the history that the user wants to see (from the last element)
+  const [historyIdx, setHistoryIdx] = useState<number>(-1);
 
   // ref to the input box for ease
   const terminalInputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +38,42 @@ function Terminal() {
     };
   }, []);
 
+  // handle arrow keys to look up input history
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // move back or forward in history if there is another place in history to go
+    if (e.key === "ArrowUp") {
+      setHistoryIdx((oldIdx) => {
+        // calculate index after this keypress
+        const newIdx = oldIdx < entries.length - 1 ? oldIdx + 1 : oldIdx;
+
+        // if we need to change the input, do it
+        if (terminalInputRef.current && newIdx !== oldIdx) {
+          terminalInputRef.current.value =
+            entries[entries.length - 1 - newIdx].input;
+        }
+
+        // update new index
+        return newIdx;
+      });
+    } else if (e.key === "ArrowDown") {
+      setHistoryIdx((oldIdx) => {
+        // calculate index after this keypress
+        const newIdx = oldIdx > -1 ? oldIdx - 1 : oldIdx;
+
+        // if we need to change the input, do it
+        if (terminalInputRef.current && newIdx > -1) {
+          terminalInputRef.current.value =
+            entries[entries.length - 1 - newIdx].input;
+        } else if (terminalInputRef.current && newIdx === -1) {
+          terminalInputRef.current.value = "";
+        }
+
+        // update new index
+        return newIdx;
+      });
+    }
+  };
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     // ignore defaults
     e.preventDefault();
@@ -43,11 +82,14 @@ function Terminal() {
       // get input value
       const inputValue = terminalInputRef.current.value.trim();
 
-      // reset
+      // reset states
       terminalInputRef.current.value = "";
+      setHistoryIdx(-1);
 
-      // handle clear command
-      if (inputValue.toLowerCase() === "clear") {
+      if (!inputValue) {
+        return;
+      } else if (inputValue.toLowerCase() === "clear") {
+        // handle clear command
         setEntries([]);
         return;
       }
@@ -108,6 +150,7 @@ function Terminal() {
           inputMode="text"
           autoCapitalize="off"
           spellCheck="false"
+          onKeyDown={handleKeyPress}
         />
       </form>
     </div>
