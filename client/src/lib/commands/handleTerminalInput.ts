@@ -7,7 +7,12 @@ import {
 import mockedCommandIndex from "./mockedCommandIndex";
 
 // command index to use here
-const commandIndex: TerminalCommandIndex = mockedCommandIndex;
+let commandIndex: TerminalCommandIndex = mockedCommandIndex;
+
+// TODO: get this working once we have actual functions
+if (process.env.NEXT_PUBLIC_USE_MOCK) {
+  commandIndex = mockedCommandIndex;
+}
 
 function parseTerminalInput(input: string): Result<TerminalCommandInput> {
   // trim and split input

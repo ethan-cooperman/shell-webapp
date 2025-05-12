@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, ReactEventHandler } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TerminalEntry, TerminalResponse } from "@/types/Terminal";
 import handleTerminalInput from "@/lib/commands/handleTerminalInput";
 
@@ -8,7 +8,7 @@ function Terminal() {
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
 
   // index in the history that the user wants to see (from the last element)
-  const [historyIdx, setHistoryIdx] = useState<number>(-1);
+  const [, setHistoryIdx] = useState<number>(-1);
 
   // ref to the input box for ease
   const terminalInputRef = useRef<HTMLInputElement>(null);
@@ -96,7 +96,7 @@ function Terminal() {
       }
 
       // handle terminal command here
-      let terminalOutput: TerminalResponse = handleTerminalInput(inputValue);
+      const terminalOutput: TerminalResponse = handleTerminalInput(inputValue);
 
       // for now, just update the entries array
       setEntries((prevEntries) => [
