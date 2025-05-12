@@ -114,14 +114,14 @@ function Terminal() {
             className="ww-full h-auto p-2 flex flex-col items-start "
           >
             <div className="w-full flex items-center mb-1">
-              <label htmlFor="terminalInput" className="text-white mr-2 w-1/10">
+              <label htmlFor="terminalInput" className="text-white mr-2 w-1/5">
                 Input:
               </label>
-              <div className="w-full text-white">{entry.input}</div>
+              <div className="w-full text-white ">{entry.input}</div>
             </div>
 
             <div className="w-full flex items-center">
-              <label htmlFor="terminalInput" className="text-white mr-2 w-1/10">
+              <label htmlFor="terminalInput" className="text-white mr-2 w-1/5">
                 Output:
               </label>
               <div className="w-full text-white">{entry.output}</div>
