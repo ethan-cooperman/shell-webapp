@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, ReactEventHandler } from "react";
-import { TerminalEntry } from "@/types/terminalEntry";
+import { TerminalEntry, TerminalResponse } from "@/types/Terminal";
+import handleTerminalInput from "@/lib/commands/handleTerminalInput";
 
 function Terminal() {
   // state for entries list
@@ -80,26 +81,30 @@ function Terminal() {
 
     if (terminalInputRef.current) {
       // get input value
-      const inputValue = terminalInputRef.current.value.trim();
+      const inputValue = terminalInputRef.current.value;
 
       // reset states
       terminalInputRef.current.value = "";
       setHistoryIdx(-1);
 
-      if (!inputValue) {
+      if (!inputValue.trim()) {
         return;
-      } else if (inputValue.toLowerCase() === "clear") {
+      } else if (inputValue.toLowerCase().trim() === "clear") {
         // handle clear command
         setEntries([]);
         return;
       }
+
+      // handle terminal command here
+      let terminalOutput: TerminalResponse = handleTerminalInput(inputValue);
+
       // for now, just update the entries array
       setEntries((prevEntries) => [
         ...prevEntries,
         {
           input: inputValue,
-          output: "Not Yet Implemented",
-          isError: false,
+          output: terminalOutput.output,
+          isError: terminalOutput.isError,
         },
       ]);
     }
