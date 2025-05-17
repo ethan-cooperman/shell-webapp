@@ -1,16 +1,19 @@
-// any terminal request should have authentification
 export interface TerminalReqBody {
-  cred: string;
+  cwd: string;
 }
 
-export interface TerminalReqBody {
-  cred: string;
+export function isTerminalReqBody(obj: unknown): obj is TerminalReqBody {
+  return (
+    isTerminalReqBody(obj) &&
+    "cwd" in obj &&
+    typeof (obj as TerminalReqBody).cwd === "string"
+  );
 }
 
 export interface LsReqBody extends TerminalReqBody {}
 
 export function isLsReqBody(obj: unknown): obj is LsReqBody {
-  return typeof obj === "object" && obj !== null;
+  return isTerminalReqBody(obj);
 }
 
 export interface CdReqBody extends TerminalReqBody {
@@ -19,8 +22,7 @@ export interface CdReqBody extends TerminalReqBody {
 
 export function isCdReqBody(obj: unknown): obj is CdReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "file" in obj &&
     typeof (obj as CdReqBody).file === "string"
   );
@@ -33,8 +35,7 @@ export interface EchoReqBody extends TerminalReqBody {
 // Type guard for EchoReqBody
 export function isEchoReqBody(obj: unknown): obj is EchoReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "file" in obj &&
     typeof (obj as EchoReqBody).file === "string"
   );
@@ -47,8 +48,7 @@ export interface CatReqBody extends TerminalReqBody {
 // Type guard for CatReqBody
 export function isCatReqBody(obj: unknown): obj is CatReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "file" in obj &&
     typeof (obj as CatReqBody).file === "string"
   );
@@ -61,8 +61,7 @@ export interface RmReqBody extends TerminalReqBody {
 // Type guard for RmReqBody
 export function isRmReqBody(obj: unknown): obj is RmReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "file" in obj &&
     typeof (obj as RmReqBody).file === "string"
   );
@@ -75,8 +74,7 @@ export interface MkdirReqBody extends TerminalReqBody {
 // Type guard for MkdirReqBody
 export function isMkdirReqBody(obj: unknown): obj is MkdirReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "name" in obj &&
     typeof (obj as MkdirReqBody).name === "string"
   );
@@ -89,8 +87,7 @@ export interface TouchReqBody extends TerminalReqBody {
 // Type guard for TouchReqBody
 export function isTouchReqBody(obj: unknown): obj is TouchReqBody {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
+    isTerminalReqBody(obj) &&
     "name" in obj &&
     typeof (obj as TouchReqBody).name === "string"
   );

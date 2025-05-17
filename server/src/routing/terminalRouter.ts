@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { isLsReqBody } from "../types/requests.js";
 import { LsResBody } from "../types/responses.js";
 import checkAuth from "../middleware/authMiddleware.js";
 import { AppError } from "../middleware/errorHandler.js";
