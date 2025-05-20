@@ -7,7 +7,9 @@ export interface TerminalResBody {
   error?: string;
 }
 
-export interface LsResBody extends TerminalResBody {}
+export interface LsResBody extends TerminalResBody {
+  path: string;
+}
 
 export interface CdResBody extends TerminalResBody {
   file: string;

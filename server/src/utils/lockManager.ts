@@ -1,26 +1,39 @@
-import { time } from "console";
 import { open, FileHandle, writeFile, unlink, readFile } from "fs/promises";
-import { resolve } from "path";
 
-class LockManager {
+export class LockManager {
   private queue: (() => Promise<void>)[] = [];
   private isProcessing = false;
 
-  public async lockFile(
-    isWrite: boolean,
-    filepath: string,
-    timeout: number = 5000
-  ): Promise<void> {
+  public async lockFile(filepath: string, isWrite: boolean): Promise<boolean> {
     // return a promise
     return new Promise((resolve, reject) => {
       // add the lock task to the lock manager's queue
       this.queue.push(async () => {
         try {
+          let result: boolean;
           if (isWrite) {
-            await this.writeLock(filepath, timeout);
+            result = await this.writeTryLock(filepath);
           } else {
-            await this.readLock(filepath, timeout);
+            result = await this.readTryLock(filepath);
           }
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+      // tell the lock manager to run its queued tasks
+      this.processQueue();
+    });
+  }
+
+  public async unlockFile(filepath: string): Promise<void> {
+    // return a promise
+    return new Promise((resolve, reject) => {
+      // add the lock task to the lock manager's queue
+      this.queue.push(async () => {
+        try {
+          await this.unLock(filepath);
           resolve();
         } catch (err) {
           reject(err);
@@ -51,94 +64,70 @@ class LockManager {
     this.isProcessing = false;
   }
 
-  private async readLock(
-    filepath: string,
-    timeout: number = 5000
-  ): Promise<void> {
+  private async readTryLock(filepath: string): Promise<boolean> {
     const lockFilePath = `${filepath}.lock`;
     // start time of operation
     const startTime = Date.now();
 
-    while (true) {
-      try {
-        // make lock file
-        const lockFile = await open(lockFilePath, "r+").catch(async (err) => {
-          if (err.code === "ENOENT") {
-            // If the file doesn't exist, create it
-            return await open(lockFilePath, "w+");
-          }
-          throw err;
-        });
-
-        // try to read file
-        const lockFileContents: Buffer = await lockFile.readFile();
-        if (lockFileContents.toString().includes("w")) {
-          // close lockFile for now
-          await lockFile.close();
-
-          // check for timeout
-          if (Date.now() - startTime > timeout) {
-            // throw TimeoutError
-            throw new TimeoutError();
-          } else {
-            // wait a bit before retrying
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
+    try {
+      // make lock file
+      const lockFile = await open(lockFilePath, "r+").catch(async (err) => {
+        if (err.code === "ENOENT") {
+          // If the file doesn't exist, create it
+          return await open(lockFilePath, "w+");
         }
+        throw err;
+      });
 
-        // add reader
-        await lockFile.appendFile("r");
-
-        // close file handler
+      // try to read file
+      const lockFileContents: Buffer = await lockFile.readFile();
+      if (lockFileContents.toString().includes("w")) {
+        // close lockFile for now
         await lockFile.close();
 
-        // lock successful
-        console.log(`Locking file ${filepath}`);
-        return;
-      } catch (err: any) {
-        // file already exists (already locked)
-        console.error(err);
-        throw err;
+        // return false to indicate lock exists
+        return false;
       }
+
+      // add reader
+      await lockFile.appendFile("r");
+
+      // close file handler
+      await lockFile.close();
+
+      // lock successful
+      console.log(`Locking file ${filepath}`);
+      return true;
+    } catch (err: any) {
+      // file already exists (already locked)
+      console.error(err);
+      throw err;
     }
   }
 
-  private async writeLock(
-    filepath: string,
-    timeout: number = 5000
-  ): Promise<boolean> {
+  private async writeTryLock(filepath: string): Promise<boolean> {
     const lockFilePath = `${filepath}.lock`;
 
-    const startTime = Date.now();
+    try {
+      // make lock file
+      const lockFile: FileHandle = await open(lockFilePath, "wx");
 
-    while (true) {
-      try {
-        // make lock file
-        const lockFile: FileHandle = await open(lockFilePath, "wx");
+      // indicate write lock
+      await writeFile(lockFile, "w");
 
-        // indicate write lock
-        await writeFile(lockFile, "w");
+      // close file handler
+      await lockFile.close();
 
-        // close file handler
-        await lockFile.close();
-
-        // lock successful
-        console.log(`Locking file ${filepath}`);
-        return;
-      } catch (err: any) {
-        // file already exists (already locked)
-        if (err.code === "EEXIST") {
-          if (Date.now() - startTime > timeout) {
-            // throw TimeoutError
-            throw new TimeoutError();
-          } else {
-            // wait a bit before retrying
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-        } else {
-          console.error(err);
-          throw err;
-        }
+      // lock successful
+      console.log(`Locking file ${filepath}`);
+      return true;
+    } catch (err: any) {
+      // file already exists (already locked)
+      if (err.code === "EEXIST") {
+        return false;
+      } else {
+        console.error(err);
+        throw err;
       }
     }
   }

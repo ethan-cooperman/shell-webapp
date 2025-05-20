@@ -4,16 +4,20 @@ export interface TerminalReqBody {
 
 export function isTerminalReqBody(obj: unknown): obj is TerminalReqBody {
   return (
-    isTerminalReqBody(obj) &&
-    "cwd" in obj &&
-    typeof (obj as TerminalReqBody).cwd === "string"
+    "cwd" in (obj as Object) && typeof (obj as TerminalReqBody).cwd === "string"
   );
 }
 
-export interface LsReqBody extends TerminalReqBody {}
+export interface LsReqBody extends TerminalReqBody {
+  path: string;
+}
 
 export function isLsReqBody(obj: unknown): obj is LsReqBody {
-  return isTerminalReqBody(obj);
+  return (
+    isTerminalReqBody(obj) &&
+    "path" in obj &&
+    typeof (obj as LsReqBody).path == "string"
+  );
 }
 
 export interface CdReqBody extends TerminalReqBody {
