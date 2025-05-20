@@ -27,13 +27,6 @@ terminalRouter.get(
     try {
       // check that body is the correct form
       if (isLsReqBody(req.body)) {
-        // check that filepaths are safe
-        if (isBreakingFilesystem(join(req.body.cwd, req.body.path))) {
-          const err: AppError = new Error(`Invalid path: ${req.body.path}`);
-          err.status = 400;
-          throw err;
-        }
-
         // get ls string
         const response: LsResBody = await doLs(req.body);
         res.json(response);
