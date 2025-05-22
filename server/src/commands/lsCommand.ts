@@ -1,16 +1,23 @@
 import { readdir } from "fs/promises";
-import { LsReqBody } from "../types/requests";
-import { LsResBody } from "../types/responses";
-import { join } from "path";
-import isBreakingFilesystem from "../utils/isBreakingFilesystem.js";
+import { LsReqBody } from "../types/requests.js";
+import { LsResBody } from "../types/responses.js";
+import constructFilepath from "../utils/constructFilepath.js";
+import doesPathExist from "../utils/doesPathExist.js";
+import { AppError } from "../middleware/errorHandler.js";
 
+// function to handle the logic of the ls shell command
 export async function doLs(reqBody: LsReqBody): Promise<LsResBody> {
-  // store filapth to ls
-  let filePath = join("fileSystem", reqBody.cwd, reqBody.path);
+  // store filepath to ls
+  const filePath = constructFilepath(reqBody.cwd, reqBody.path);
 
-  // don't let user break out of fileSystem directory
-  if (isBreakingFilesystem(filePath)) {
-    filePath = "fileSystem";
+  // check that path exists
+  const pathExists: boolean = await doesPathExist(filePath);
+
+  // handle case where cwd doesn't exist
+  if (!pathExists) {
+    const err: AppError = new Error(`Invalid filepath: ${reqBody.path}`);
+    err.status = 404;
+    throw err;
   }
 
   // get all subDirectories

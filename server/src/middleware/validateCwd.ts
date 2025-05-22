@@ -1,24 +1,6 @@
-import { join } from "path";
-import { access, constants } from "fs/promises";
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "./errorHandler";
-import isBreakingFilesystem from "../utils/isBreakingFilesystem.js";
-
-// Confirms that cwd exists
-async function validateCwd(cwd: string): Promise<void> {
-  try {
-    if (isBreakingFilesystem(cwd)) {
-      const err: AppError = new Error(`Invalid cwd filepath: ${cwd}`);
-      err.status = 400;
-      throw err;
-    }
-
-    // Confirm we can read cwd
-    await access(join("fileSystem", cwd), constants.R_OK);
-  } catch (err) {
-    throw err;
-  }
-}
+import { AppError } from "./errorHandler.js";
+import doesPathExist from "../utils/doesPathExist.js";
 
 export default async function checkCwd(
   req: Request,
@@ -37,10 +19,16 @@ export default async function checkCwd(
   // confirm cwd is valid
   try {
     // validate cwd
-    await validateCwd(cwd);
+    const pathExists: boolean = await doesPathExist(cwd);
 
-    // if this all works, move on
-    next();
+    // handle case where cwd doesn't exist
+    if (!pathExists) {
+      const err: AppError = new Error(`Invalid cwd filepath: ${cwd}`);
+      err.status = 400;
+      return next(err);
+    }
+
+    return next();
   } catch (err) {
     next(err);
   }

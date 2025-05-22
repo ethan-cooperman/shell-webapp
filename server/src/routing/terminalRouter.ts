@@ -6,7 +6,7 @@ import { LockManager } from "../utils/lockManager.js";
 import checkCwd from "../middleware/validateCwd.js";
 import { doLs } from "../commands/lsCommand.js";
 import { isLsReqBody } from "../types/requests.js";
-import isBreakingFilesystem from "../utils/isBreakingFilesystem.js";
+import isBreakingFilesystem from "../utils/constructFilepath.js";
 import { join } from "path";
 
 // router

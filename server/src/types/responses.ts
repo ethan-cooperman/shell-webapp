@@ -12,7 +12,7 @@ export interface LsResBody extends TerminalResBody {
 }
 
 export interface CdResBody extends TerminalResBody {
-  file: string;
+  path: string;
 }
 
 export interface EchoResBody extends TerminalResBody {

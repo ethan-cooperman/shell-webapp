@@ -21,14 +21,14 @@ export function isLsReqBody(obj: unknown): obj is LsReqBody {
 }
 
 export interface CdReqBody extends TerminalReqBody {
-  file: string;
+  path: string;
 }
 
 export function isCdReqBody(obj: unknown): obj is CdReqBody {
   return (
     isTerminalReqBody(obj) &&
-    "file" in obj &&
-    typeof (obj as CdReqBody).file === "string"
+    "path" in obj &&
+    typeof (obj as CdReqBody).path === "string"
   );
 }
 
