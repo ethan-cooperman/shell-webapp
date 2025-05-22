@@ -8,12 +8,12 @@ import { AppError } from "../middleware/errorHandler.js";
 // function to handle the logic of the ls shell command
 export async function doLs(reqBody: LsReqBody): Promise<LsResBody> {
   // store filepath to ls
-  const filePath = constructFilepath(reqBody.cwd, reqBody.path);
+  const filePath: string = constructFilepath(reqBody.cwd, reqBody.path);
 
   // check that path exists
   const pathExists: boolean = await doesPathExist(filePath);
 
-  // handle case where cwd doesn't exist
+  // handle case where path doesn't exist
   if (!pathExists) {
     const err: AppError = new Error(`Invalid filepath: ${reqBody.path}`);
     err.status = 404;

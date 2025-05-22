@@ -12,7 +12,7 @@ import { AppError } from "../middleware/errorHandler.js";
  */
 export async function doCd(reqBody: CdReqBody): Promise<CdResBody> {
   // store filepath to cd
-  const filePath = constructFilepath(reqBody.cwd, reqBody.path);
+  const filePath: string = constructFilepath(reqBody.cwd, reqBody.path);
 
   // check that path exists
   const pathExists: boolean = await doesPathExist(filePath);

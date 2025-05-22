@@ -28,4 +28,5 @@ export type TerminalCommandIndex = {
   rm: TerminalCommand;
   mkdir: TerminalCommand;
   touch: TerminalCommand;
+  rmdir: TerminalCommand;
 };

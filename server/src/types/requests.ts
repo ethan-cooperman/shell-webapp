@@ -32,29 +32,18 @@ export function isCdReqBody(obj: unknown): obj is CdReqBody {
   );
 }
 
-export interface EchoReqBody extends TerminalReqBody {
+export interface ReadReqBody extends TerminalReqBody {
   file: string;
+  numBytes?: number;
+  offset?: number;
 }
 
-// Type guard for EchoReqBody
-export function isEchoReqBody(obj: unknown): obj is EchoReqBody {
+// Type guard for ReadReqBody
+export function isReadReqBody(obj: unknown): obj is ReadReqBody {
   return (
     isTerminalReqBody(obj) &&
     "file" in obj &&
-    typeof (obj as EchoReqBody).file === "string"
-  );
-}
-
-export interface CatReqBody extends TerminalReqBody {
-  file: string;
-}
-
-// Type guard for CatReqBody
-export function isCatReqBody(obj: unknown): obj is CatReqBody {
-  return (
-    isTerminalReqBody(obj) &&
-    "file" in obj &&
-    typeof (obj as CatReqBody).file === "string"
+    typeof (obj as ReadReqBody).file === "string"
   );
 }
 
@@ -71,6 +60,19 @@ export function isRmReqBody(obj: unknown): obj is RmReqBody {
   );
 }
 
+export interface RmdirReqBody extends TerminalReqBody {
+  name: string;
+}
+
+// Type guard for RmReqBody
+export function isRmdirReqBody(obj: unknown): obj is RmdirReqBody {
+  return (
+    isTerminalReqBody(obj) &&
+    "name" in obj &&
+    typeof (obj as RmdirReqBody).name === "string"
+  );
+}
+
 export interface MkdirReqBody extends TerminalReqBody {
   name: string;
 }
@@ -84,15 +86,21 @@ export function isMkdirReqBody(obj: unknown): obj is MkdirReqBody {
   );
 }
 
-export interface TouchReqBody extends TerminalReqBody {
-  name: string;
+export interface WriteReqBody extends TerminalReqBody {
+  file: string;
+  contents: string;
+  numBytes?: number;
+  offset?: number;
+  append?: boolean;
 }
 
-// Type guard for TouchReqBody
-export function isTouchReqBody(obj: unknown): obj is TouchReqBody {
+// Type guard for WriteReqBody
+export function isWriteReqBody(obj: unknown): obj is WriteReqBody {
   return (
     isTerminalReqBody(obj) &&
-    "name" in obj &&
-    typeof (obj as TouchReqBody).name === "string"
+    "file" in obj &&
+    typeof (obj as WriteReqBody).file === "string" &&
+    "contents" in obj &&
+    typeof (obj as WriteReqBody).contents === "string"
   );
 }

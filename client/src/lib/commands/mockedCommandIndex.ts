@@ -82,6 +82,19 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
+  rmdir: (input: TerminalCommandInput) => {
+    if (input.argv.length === 2) {
+      return {
+        output: `I would be removing directory ${input.argv[1]}`,
+        isError: false,
+      };
+    } else {
+      return {
+        output: `rmdir: expected 1 argument`,
+        isError: true,
+      };
+    }
+  },
 };
 
 export default mockedCommandIndex;
