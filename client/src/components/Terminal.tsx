@@ -4,6 +4,9 @@ import { TerminalEntry, TerminalResponse } from "@/types/Terminal";
 import handleTerminalInput from "@/lib/commands/handleTerminalInput";
 
 function Terminal() {
+  // ref to store cwd
+  const cwdRef = useRef<string>(".");
+
   // state for entries list
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
 
@@ -75,7 +78,9 @@ function Terminal() {
     }
   };
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
     // ignore defaults
     e.preventDefault();
 
@@ -96,7 +101,10 @@ function Terminal() {
       }
 
       // handle terminal command here
-      const terminalOutput: TerminalResponse = handleTerminalInput(inputValue);
+      const terminalOutput: TerminalResponse = await handleTerminalInput(
+        inputValue,
+        cwdRef
+      );
 
       // for now, just update the entries array
       setEntries((prevEntries) => [

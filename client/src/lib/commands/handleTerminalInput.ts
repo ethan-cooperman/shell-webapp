@@ -1,8 +1,8 @@
 import {
-  TerminalCommandInput,
   Result,
   TerminalResponse,
   TerminalCommandIndex,
+  ParsedCommandInput,
 } from "@/types/Terminal";
 import mockedCommandIndex from "./mockedCommandIndex";
 
@@ -14,7 +14,7 @@ if (process.env.NEXT_PUBLIC_USE_MOCK) {
   commandIndex = mockedCommandIndex;
 }
 
-function parseTerminalInput(input: string): Result<TerminalCommandInput> {
+function parseTerminalInput(input: string): Result<ParsedCommandInput> {
   // trim and split input
   const tokens: string[] = input
     .trim()
@@ -22,7 +22,7 @@ function parseTerminalInput(input: string): Result<TerminalCommandInput> {
     .filter((x) => x);
 
   // prepare a final argv
-  const finalInput: TerminalCommandInput = {
+  const finalInput: ParsedCommandInput = {
     argv: [],
   };
 
@@ -83,7 +83,10 @@ function parseTerminalInput(input: string): Result<TerminalCommandInput> {
   return { success: true, value: finalInput };
 }
 
-export default function handleTerminalInput(input: string): TerminalResponse {
+export default async function handleTerminalInput(
+  input: string,
+  cwdRef: React.RefObject<string>
+): Promise<TerminalResponse> {
   // parse input
   const parseResult = parseTerminalInput(input);
 
@@ -108,7 +111,13 @@ export default function handleTerminalInput(input: string): TerminalResponse {
     };
   }
 
+  // get first element in argv for function name
   const commandName = commandInput.argv[0] as keyof TerminalCommandIndex;
 
-  return commandIndex[commandName](commandInput);
+  // pass in parsed input with ref to cwd variable
+  // TODO: handle redirects from this point
+  return await commandIndex[commandName]({
+    cwdRef: cwdRef,
+    ...commandInput,
+  });
 }

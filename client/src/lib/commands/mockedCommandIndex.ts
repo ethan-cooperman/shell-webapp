@@ -1,7 +1,8 @@
 import { TerminalCommandIndex, TerminalCommandInput } from "@/types/Terminal";
+import doLs from "./terminalCommands/lsCommand";
 
 const mockedCommandIndex: TerminalCommandIndex = {
-  ls: (input: TerminalCommandInput) => {
+  ls: async (input: TerminalCommandInput) => {
     if (input.argv.length == 1) {
       return { output: "There are files here", isError: false };
     } else {
@@ -11,7 +12,7 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  cd: (input: TerminalCommandInput) => {
+  cd: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `Changing directory to ${input.argv[1]}. Or am I ...?`,
@@ -24,13 +25,13 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  echo: (input: TerminalCommandInput) => {
+  echo: async (input: TerminalCommandInput) => {
     return {
       output: input.argv.slice(1).join(" "),
       isError: false,
     };
   },
-  cat: (input: TerminalCommandInput) => {
+  cat: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `I should be reading contents of file ${input.argv[1]}`,
@@ -43,7 +44,7 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  rm: (input: TerminalCommandInput) => {
+  rm: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `I should be deleting contents of file ${input.argv[1]}`,
@@ -56,7 +57,7 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  mkdir: (input: TerminalCommandInput) => {
+  mkdir: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `I would be making a directory ${input.argv[1]}`,
@@ -69,7 +70,7 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  touch: (input: TerminalCommandInput) => {
+  touch: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `I would be making a file ${input.argv[1]}`,
@@ -82,7 +83,7 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
-  rmdir: (input: TerminalCommandInput) => {
+  rmdir: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
       return {
         output: `I would be removing directory ${input.argv[1]}`,

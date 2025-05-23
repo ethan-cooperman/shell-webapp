@@ -6,6 +6,14 @@ import handleError from "./middleware/errorHandler.js";
 
 const app = express();
 
+// handle cors middleware
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN,
+    credentials: true,
+  })
+);
+
 // parse request into json
 app.use(express.json());
 

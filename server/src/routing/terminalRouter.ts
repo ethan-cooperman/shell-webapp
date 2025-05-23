@@ -41,7 +41,7 @@ terminalRouter.use(checkAuth);
 // add cwd validating middleware
 terminalRouter.use(checkCwd);
 
-terminalRouter.get(
+terminalRouter.post(
   "/ls",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -63,7 +63,7 @@ terminalRouter.get(
   }
 );
 
-terminalRouter.get(
+terminalRouter.post(
   "/cd",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -85,7 +85,7 @@ terminalRouter.get(
   }
 );
 
-terminalRouter.get(
+terminalRouter.post(
   "/read",
   async (req: Request, res: Response, next: NextFunction) => {
     try {

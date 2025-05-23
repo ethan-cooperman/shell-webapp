@@ -11,14 +11,26 @@ export type TerminalEntry = {
   input: string;
 } & TerminalResponse;
 
-export type TerminalCommandInput = {
+// object type representing parsed line in shell
+export type ParsedCommandInput = {
   argv: string[];
   inputRedirect?: string;
   outputRedirect?: string;
   isAppend?: boolean;
 };
 
-export type TerminalCommand = (input: TerminalCommandInput) => TerminalResponse;
+// command of parsed inputs and cwd to execute in
+export type TerminalCommandInput = ParsedCommandInput & {
+  cwdRef: React.RefObject<string>;
+};
+
+// type to represent a terminal command to allow for multiple implementations
+export type TerminalCommand = (
+  input: TerminalCommandInput
+) => Promise<TerminalResponse>;
+
+// type to represent http request body
+export type RequestBody = { [key: string]: string };
 
 export type TerminalCommandIndex = {
   ls: TerminalCommand;
