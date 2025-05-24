@@ -41,4 +41,5 @@ export type TerminalCommandIndex = {
   mkdir: TerminalCommand;
   touch: TerminalCommand;
   rmdir: TerminalCommand;
+  pwd: TerminalCommand;
 };

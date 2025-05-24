@@ -95,6 +95,13 @@ const mockedCommandIndex: TerminalCommandIndex = {
       };
     }
   },
+  pwd: async (input: TerminalCommandInput) => {
+    if (input.cwdRef.current) {
+      return { isError: false, output: input.cwdRef.current };
+    } else {
+      return { isError: false, output: "No current working directory" };
+    }
+  },
 };
 
 export default mockedCommandIndex;

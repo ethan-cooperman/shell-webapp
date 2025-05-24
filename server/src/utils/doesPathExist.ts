@@ -11,7 +11,7 @@ export default async function doesPathExist(path: string): Promise<boolean> {
   const rootDir = join(process.cwd(), "fileSystem");
 
   // get physical path
-  let absPath = resolve(rootDir, path);
+  let absPath = path === "/" ? rootDir : resolve(rootDir, path);
 
   // Ensure absPath is within rootDir. This is ok because filepath should
   // only be physical path at this point

@@ -5,6 +5,13 @@ import doCd from "./terminalCommands/cdCommand";
 const terminalCommandIndex: TerminalCommandIndex = {
   ls: doLs,
   cd: doCd,
+  pwd: async (input: TerminalCommandInput) => {
+    if (input.cwdRef.current) {
+      return { isError: false, output: input.cwdRef.current };
+    } else {
+      return { isError: false, output: "No current working directory" };
+    }
+  },
   echo: async (input: TerminalCommandInput) => {
     return {
       output: input.argv.slice(1).join(" "),

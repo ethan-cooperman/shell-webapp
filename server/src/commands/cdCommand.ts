@@ -30,7 +30,7 @@ export async function doCd(reqBody: CdReqBody): Promise<CdResBody> {
 
   // get abs path for new cwd ("." if we're just in the root)
   const newCwd: string =
-    relative(rootDir, filePath).length > 0 ? relative(rootDir, filePath) : ".";
+    relative(rootDir, filePath).length > 0 ? relative(rootDir, filePath) : "/";
 
   // indicate that path was ok
   return { success: true, path: reqBody.path, data: newCwd };

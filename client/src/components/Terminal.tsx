@@ -5,7 +5,7 @@ import handleTerminalInput from "@/lib/commands/handleTerminalInput";
 
 function Terminal() {
   // ref to store cwd
-  const cwdRef = useRef<string>(".");
+  const cwdRef = useRef<string>("/");
 
   // state for entries list
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
