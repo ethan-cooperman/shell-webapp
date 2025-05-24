@@ -7,6 +7,7 @@ import {
 } from "@/types/Terminal";
 
 const doCd: TerminalCommand = async (input: TerminalCommandInput) => {
+  // TODO: handle ../../../Desktop cases
   // make sure we have arguments
   if (input.argv.length < 1 || input.argv.length > 2) {
     return {

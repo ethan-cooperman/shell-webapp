@@ -1,10 +1,12 @@
 import { TerminalCommandIndex, TerminalCommandInput } from "@/types/Terminal";
 import doLs from "./terminalCommands/lsCommand";
 import doCd from "./terminalCommands/cdCommand";
+import doCat from "./terminalCommands/catCommand";
 
 const terminalCommandIndex: TerminalCommandIndex = {
   ls: doLs,
   cd: doCd,
+  cat: doCat,
   pwd: async (input: TerminalCommandInput) => {
     if (input.cwdRef.current) {
       return { isError: false, output: input.cwdRef.current };
@@ -17,19 +19,6 @@ const terminalCommandIndex: TerminalCommandIndex = {
       output: input.argv.slice(1).join(" "),
       isError: false,
     };
-  },
-  cat: async (input: TerminalCommandInput) => {
-    if (input.argv.length === 2) {
-      return {
-        output: `I should be reading contents of file ${input.argv[1]}`,
-        isError: false,
-      };
-    } else {
-      return {
-        output: `cat: expected 1 argument`,
-        isError: true,
-      };
-    }
   },
   rm: async (input: TerminalCommandInput) => {
     if (input.argv.length === 2) {
