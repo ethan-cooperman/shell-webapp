@@ -3,6 +3,7 @@ import { CdResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
+import { join, relative } from "path";
 
 /**
  * Function to handle the logic of the cd shell command. Only need to verify
@@ -24,6 +25,13 @@ export async function doCd(reqBody: CdReqBody): Promise<CdResBody> {
     throw err;
   }
 
+  // get directory to filesystem
+  const rootDir = join(process.cwd(), "fileSystem");
+
+  // get abs path for new cwd ("." if we're just in the root)
+  const newCwd: string =
+    relative(rootDir, filePath).length > 0 ? relative(rootDir, filePath) : ".";
+
   // indicate that path was ok
-  return { success: true, path: reqBody.path };
+  return { success: true, path: reqBody.path, data: newCwd };
 }

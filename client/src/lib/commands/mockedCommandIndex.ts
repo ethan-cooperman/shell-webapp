@@ -1,5 +1,4 @@
 import { TerminalCommandIndex, TerminalCommandInput } from "@/types/Terminal";
-import doLs from "./terminalCommands/lsCommand";
 
 const mockedCommandIndex: TerminalCommandIndex = {
   ls: async (input: TerminalCommandInput) => {

@@ -5,6 +5,7 @@ import {
   ParsedCommandInput,
 } from "@/types/Terminal";
 import mockedCommandIndex from "./mockedCommandIndex";
+import terminalCommandIndex from "./terminalCommandIndex";
 
 // command index to use here
 let commandIndex: TerminalCommandIndex = mockedCommandIndex;
@@ -13,6 +14,8 @@ let commandIndex: TerminalCommandIndex = mockedCommandIndex;
 if (process.env.NEXT_PUBLIC_USE_MOCK) {
   commandIndex = mockedCommandIndex;
 }
+
+commandIndex = terminalCommandIndex;
 
 function parseTerminalInput(input: string): Result<ParsedCommandInput> {
   // trim and split input
