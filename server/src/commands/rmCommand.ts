@@ -24,5 +24,9 @@ export async function doRm(reqBody: RmReqBody): Promise<RmResBody> {
   await unlink(filePath);
 
   // convert subDirectories into string with newlines
-  return { success: true, file: reqBody.file };
+  return {
+    success: true,
+    file: reqBody.file,
+    data: "File deleted successfully",
+  };
 }

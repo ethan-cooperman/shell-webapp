@@ -26,5 +26,9 @@ export async function doMkdir(reqBody: MkdirReqBody): Promise<MkdirResBody> {
   await mkdir(filePath);
 
   // return succcess object
-  return { success: true, name: reqBody.name };
+  return {
+    success: true,
+    name: reqBody.name,
+    data: "Directory created successfully",
+  };
 }

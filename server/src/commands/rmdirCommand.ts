@@ -24,5 +24,9 @@ export async function doRmdir(reqBody: RmdirReqBody): Promise<RmdirResBody> {
   await rmdir(filePath);
 
   // convert subDirectories into string with newlines
-  return { success: true, name: reqBody.name };
+  return {
+    success: true,
+    name: reqBody.name,
+    data: "Directory deleted successfully",
+  };
 }

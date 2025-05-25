@@ -1,3 +1,7 @@
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
 export type Result<T> =
   | { success: true; value: T }
   | { success: false; error: string };
@@ -20,9 +24,11 @@ export type ParsedCommandInput = {
 };
 
 // command of parsed inputs and cwd to execute in
-export type TerminalCommandInput = ParsedCommandInput & {
-  cwdRef: React.RefObject<string>;
-};
+export type TerminalCommandInput = Prettify<
+  ParsedCommandInput & {
+    cwdRef: React.RefObject<string>;
+  }
+>;
 
 // type to represent a terminal command to allow for multiple implementations
 export type TerminalCommand = (
@@ -30,7 +36,7 @@ export type TerminalCommand = (
 ) => Promise<TerminalResponse>;
 
 // type to represent http request body
-export type RequestBody = { [key: string]: string };
+export type RequestBody = { [key: string]: string | number };
 
 export type TerminalCommandIndex = {
   ls: TerminalCommand;

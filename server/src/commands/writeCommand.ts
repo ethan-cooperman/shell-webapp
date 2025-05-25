@@ -74,5 +74,6 @@ export async function doWrite(reqBody: WriteReqBody): Promise<WriteResBody> {
     offset: reqBody.offset,
     numBytes: reqBody.numBytes,
     append: reqBody.append,
+    data: "Write successful",
   };
 }
