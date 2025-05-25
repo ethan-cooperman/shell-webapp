@@ -118,9 +118,12 @@ export default async function handleTerminalInput(
   const commandName = commandInput.argv[0] as keyof TerminalCommandIndex;
 
   // pass in parsed input with ref to cwd variable
-  // TODO: handle redirects from this point
-  return await commandIndex[commandName]({
+  const commandOutput: TerminalResponse = await commandIndex[commandName]({
     cwdRef: cwdRef,
     ...commandInput,
   });
+
+  // TODO: handle redirects from this point
+
+  return commandOutput;
 }

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { TerminalEntry, TerminalResponse } from "@/types/Terminal";
-import handleTerminalInput from "@/lib/commands/handleTerminalInput";
+import handleTerminalInput from "@/lib/terminalCommands/handleTerminalInput";
 
 function Terminal() {
   // ref to store cwd

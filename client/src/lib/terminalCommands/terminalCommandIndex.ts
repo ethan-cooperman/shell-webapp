@@ -1,11 +1,11 @@
 import { TerminalCommandIndex, TerminalCommandInput } from "@/types/Terminal";
-import doLs from "./terminalCommands/lsCommand";
-import doCd from "./terminalCommands/cdCommand";
-import doCat from "./terminalCommands/catCommand";
-import doRm from "./terminalCommands/rmCommand";
-import doRmdir from "./terminalCommands/rmdirCommand";
-import doMkdir from "./terminalCommands/mkdirCommand";
-import doTouch from "./terminalCommands/touchCommand";
+import doLs from "./commandHelpers/lsCommand";
+import doCd from "./commandHelpers/cdCommand";
+import doCat from "./commandHelpers/catCommand";
+import doRm from "./commandHelpers/rmCommand";
+import doRmdir from "./commandHelpers/rmdirCommand";
+import doMkdir from "./commandHelpers/mkdirCommand";
+import doTouch from "./commandHelpers/touchCommand";
 
 const terminalCommandIndex: TerminalCommandIndex = {
   ls: doLs,
