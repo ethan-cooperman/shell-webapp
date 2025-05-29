@@ -3,7 +3,9 @@ import { Request, Response, NextFunction } from "express";
 export interface AppError extends Error {
   status?: number;
 }
-
+/**
+ * Error handler middleware
+ */
 export default function handleError(
   err: AppError,
   req: Request,

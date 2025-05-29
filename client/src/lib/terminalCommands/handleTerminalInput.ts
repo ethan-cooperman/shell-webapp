@@ -6,17 +6,23 @@ import {
 } from "@/types/Terminal";
 import mockedCommandIndex from "./mockedCommandIndex";
 import terminalCommandIndex from "./terminalCommandIndex";
+import handleOutputRedirect from "./handleOutputRedirect";
 
 // command index to use here
 let commandIndex: TerminalCommandIndex = mockedCommandIndex;
 
-// TODO: get this working once we have actual functions
-if (process.env.NEXT_PUBLIC_USE_MOCK) {
+if (process.env.NEXT_PUBLIC_USE_MOCK === "TRUE") {
   commandIndex = mockedCommandIndex;
+} else {
+  commandIndex = terminalCommandIndex;
 }
 
-commandIndex = terminalCommandIndex;
-
+/**
+ * Given a raw string line of terminal input, parses it
+ * @param input raw string input into the terminal
+ * @returns ParsedCommandInput representation of argv (without redirects)
+ *         and file redirects in the object
+ */
 function parseTerminalInput(input: string): Result<ParsedCommandInput> {
   // trim and split input
   const tokens: string[] = input
@@ -86,12 +92,18 @@ function parseTerminalInput(input: string): Result<ParsedCommandInput> {
   return { success: true, value: finalInput };
 }
 
+/**
+ * Performs appropriate operation for a raw line of terminal input
+ * @param input raw string of terminal input
+ * @param cwdRef React ref to a string cwd representation
+ * @returns TerminalResponse object representing stdout/stderr
+ */
 export default async function handleTerminalInput(
   input: string,
   cwdRef: React.RefObject<string>
 ): Promise<TerminalResponse> {
   // parse input
-  const parseResult = parseTerminalInput(input);
+  const parseResult: Result<ParsedCommandInput> = parseTerminalInput(input);
 
   // if there's an error, return error message
   if (!parseResult.success) {
@@ -99,7 +111,7 @@ export default async function handleTerminalInput(
   }
 
   // get argv
-  const commandInput = parseResult.value;
+  const commandInput: ParsedCommandInput = parseResult.value;
 
   // Ensure argv is not empty
   if (!commandInput.argv || commandInput.argv.length === 0) {
@@ -123,7 +135,21 @@ export default async function handleTerminalInput(
     ...commandInput,
   });
 
-  // TODO: handle redirects from this point
+  // handle redirects if user wants it and we don't have an error to report
+  if (commandInput.outputRedirect && !commandOutput.isError) {
+    const outputRedirectResult: TerminalResponse = await handleOutputRedirect(
+      commandOutput.output,
+      commandInput.outputRedirect,
+      !!commandInput.isAppend,
+      cwdRef
+    );
 
-  return commandOutput;
+    if (outputRedirectResult.isError) {
+      return outputRedirectResult;
+    } else {
+      return { isError: false, output: "" };
+    }
+  } else {
+    return commandOutput;
+  }
 }

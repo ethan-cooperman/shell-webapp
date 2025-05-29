@@ -5,8 +5,11 @@ import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { dirname } from "path";
 import { open, FileHandle } from "fs/promises";
-
-// function to handle the logic of writing to a file
+/**
+ * function to handle the logic of writing to a file
+ * @param reqBody object representation of this write request
+ * @returns write response object
+ */
 export async function doWrite(reqBody: WriteReqBody): Promise<WriteResBody> {
   // store filepath to write
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.file);

@@ -2,6 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "./errorHandler.js";
 import doesPathExist from "../utils/doesPathExist.js";
 
+/**
+ * Middleware handler to validate that cwd is valid
+ * @param req request object
+ * @param res response function
+ * @param next next() handler function
+ * @returns nothing
+ */
 export default async function checkCwd(
   req: Request,
   res: Response,

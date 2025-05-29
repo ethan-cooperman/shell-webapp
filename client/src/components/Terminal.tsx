@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { TerminalEntry, TerminalResponse } from "@/types/Terminal";
 import handleTerminalInput from "@/lib/terminalCommands/handleTerminalInput";
 
+/**
+ * React component for entire terminal
+ */
 function Terminal() {
   // ref to store cwd
   const cwdRef = useRef<string>("/");
@@ -78,6 +81,11 @@ function Terminal() {
     }
   };
 
+  /**
+   * Event handler to manage submit query
+   * @param e submit event
+   * @returns nothing
+   */
   async function handleSubmit(
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> {
@@ -128,15 +136,13 @@ function Terminal() {
           >
             <div className="w-full flex items-center mb-1">
               <label htmlFor="terminalInput" className="text-white mr-2 w-1/5">
-                Input:
+                {"client>"}
               </label>
               <div className="w-full text-white ">{entry.input}</div>
             </div>
 
             <div className="w-full flex items-center">
-              <label htmlFor="terminalInput" className="text-white mr-2 w-1/5">
-                Output:
-              </label>
+              <div className=" mr-2 w-1/5" />
               <div className="w-full text-white">{entry.output}</div>
             </div>
           </li>

@@ -5,7 +5,11 @@ import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
 
-// function to handle the logic of the ls shell command
+/**
+ * function to handle the logic of the ls shell command
+ * @param reqBody information about this ls request
+ * @returns ls response
+ */
 export async function doLs(reqBody: LsReqBody): Promise<LsResBody> {
   // store filepath to ls
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.path);

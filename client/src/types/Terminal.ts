@@ -36,7 +36,7 @@ export type TerminalCommand = (
 ) => Promise<TerminalResponse>;
 
 // type to represent http request body
-export type RequestBody = { [key: string]: string | number };
+export type RequestBody = { [key: string]: string | number | boolean };
 
 export type TerminalCommandIndex = {
   ls: TerminalCommand;

@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import authenticate from "../utils/authenticate.js";
 import { AppError } from "./errorHandler.js";
 
+/**
+ * Middleware handler to check bearer token of request
+ */
 export default function checkAuth(
   req: Request,
   res: Response,

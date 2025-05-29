@@ -5,7 +5,11 @@ import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { FileHandle, open, readFile } from "fs/promises";
 
-// function to handle the logic of file reading
+/**
+ * function to handle the logic of file reading
+ * @param reqBody object representation of this read request
+ * @returns read response containing read contents
+ */
 export async function doRead(reqBody: ReadReqBody): Promise<ReadResBody> {
   // store filepath to read
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.file);

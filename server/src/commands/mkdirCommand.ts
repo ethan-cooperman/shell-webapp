@@ -6,7 +6,11 @@ import { AppError } from "../middleware/errorHandler.js";
 import { dirname } from "path";
 import { mkdir } from "fs/promises";
 
-// function to handle the logic of the mkdir shell command
+/**
+ * function to handle the logic of the mkdir shell command
+ * @param reqBody request body for this mkdir request
+ * @returns mkdir response
+ */
 export async function doMkdir(reqBody: MkdirReqBody): Promise<MkdirResBody> {
   // store filepath to mkdir
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.name);

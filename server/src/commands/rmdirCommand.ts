@@ -5,7 +5,11 @@ import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
 
-// function to handle the logic of the rm shell command
+/**
+ * function to handle the logic of rmdir request
+ * @param reqBody object representation of this rmdir request
+ * @returns rmdir response
+ */
 export async function doRmdir(reqBody: RmdirReqBody): Promise<RmdirResBody> {
   // store filepath to rm
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.name);
