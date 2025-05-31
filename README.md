@@ -39,7 +39,8 @@ To run the application, you need to have Node.js installed on your machine. By d
 
 1. Clone the repository:
 2. Navigate to the project directory:
-3. Install dependencies and run both the server and client:
+3. Create environment files as described above in the `server` and `client` directories.
+4. Install dependencies and run both the server and client:
 
 ```bash
 cd server
