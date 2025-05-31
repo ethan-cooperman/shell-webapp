@@ -1,6 +1,6 @@
 import { readdir } from "fs/promises";
 import { LsReqBody } from "../types/requests.js";
-import { LsResBody } from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -10,7 +10,7 @@ import { AppError } from "../middleware/errorHandler.js";
  * @param reqBody information about this ls request
  * @returns ls response
  */
-export async function doLs(reqBody: LsReqBody): Promise<LsResBody> {
+export async function doLs(reqBody: LsReqBody): Promise<TerminalResBody> {
   // store filepath to ls
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.path);
 
@@ -28,5 +28,5 @@ export async function doLs(reqBody: LsReqBody): Promise<LsResBody> {
   const subDirectories: string[] = await readdir(filePath);
 
   // convert subDirectories into string with newlines
-  return { success: true, data: subDirectories.join("\n"), path: reqBody.path };
+  return { success: true, data: subDirectories.join("\n") };
 }

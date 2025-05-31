@@ -1,13 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import {
-  ReadResBody,
-  CdResBody,
-  LsResBody,
-  MkdirResBody,
-  RmResBody,
-  WriteResBody,
-  RmdirResBody,
-} from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import checkAuth from "../middleware/authMiddleware.js";
 import handleError, { AppError } from "../middleware/errorHandler.js";
 import { LockManager } from "../utils/lockManager.js";
@@ -48,7 +40,7 @@ terminalRouter.post(
       // check that body is the correct form
       if (isLsReqBody(req.body)) {
         // get ls string
-        const response: LsResBody = await doLs(req.body);
+        const response: TerminalResBody = await doLs(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -70,7 +62,7 @@ terminalRouter.post(
       // check that body is the correct form
       if (isCdReqBody(req.body)) {
         // get cd string
-        const response: CdResBody = await doCd(req.body);
+        const response: TerminalResBody = await doCd(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -92,7 +84,7 @@ terminalRouter.post(
       // check that body is the correct form
       if (isReadReqBody(req.body)) {
         // get cat response
-        const response: ReadResBody = await doRead(req.body);
+        const response: TerminalResBody = await doRead(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -114,7 +106,7 @@ terminalRouter.post(
       // check that body is the correct form
       if (isMkdirReqBody(req.body)) {
         // get mkdir response
-        const response: MkdirResBody = await doMkdir(req.body);
+        const response: TerminalResBody = await doMkdir(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -136,7 +128,7 @@ terminalRouter.post(
       // check that body is the correct form
       if (isWriteReqBody(req.body)) {
         // get rm response
-        const response: WriteResBody = await doWrite(req.body);
+        const response: TerminalResBody = await doWrite(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -158,7 +150,7 @@ terminalRouter.delete(
       // check that body is the correct form
       if (isRmReqBody(req.body)) {
         // get rm response
-        const response: RmResBody = await doRm(req.body);
+        const response: TerminalResBody = await doRm(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(
@@ -180,7 +172,7 @@ terminalRouter.delete(
       // check that body is the correct form
       if (isRmdirReqBody(req.body)) {
         // get rm response
-        const response: RmdirResBody = await doRmdir(req.body);
+        const response: TerminalResBody = await doRmdir(req.body);
         res.json(response);
       } else {
         const err: AppError = new Error(

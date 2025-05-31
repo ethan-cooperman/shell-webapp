@@ -1,6 +1,6 @@
 import { rmdir } from "fs/promises";
-import { RmdirReqBody, RmReqBody } from "../types/requests.js";
-import { RmdirResBody, RmResBody } from "../types/responses.js";
+import { RmdirReqBody } from "../types/requests.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -10,7 +10,7 @@ import { AppError } from "../middleware/errorHandler.js";
  * @param reqBody object representation of this rmdir request
  * @returns rmdir response
  */
-export async function doRmdir(reqBody: RmdirReqBody): Promise<RmdirResBody> {
+export async function doRmdir(reqBody: RmdirReqBody): Promise<TerminalResBody> {
   // store filepath to rm
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.name);
 
@@ -30,7 +30,6 @@ export async function doRmdir(reqBody: RmdirReqBody): Promise<RmdirResBody> {
   // convert subDirectories into string with newlines
   return {
     success: true,
-    name: reqBody.name,
     data: "Directory deleted successfully",
   };
 }

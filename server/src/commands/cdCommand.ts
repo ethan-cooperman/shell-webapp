@@ -1,9 +1,9 @@
 import { CdReqBody } from "../types/requests.js";
-import { CdResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { join, relative } from "path";
+import { TerminalResBody } from "../types/responses.js";
 
 /**
  * Function to handle the logic of the cd shell command. Only need to verify
@@ -11,7 +11,7 @@ import { join, relative } from "path";
  * @param reqBody request body for cd command
  * @returns Promise to a response body object
  */
-export async function doCd(reqBody: CdReqBody): Promise<CdResBody> {
+export async function doCd(reqBody: CdReqBody): Promise<TerminalResBody> {
   // store filepath to cd
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.path);
 
@@ -33,5 +33,5 @@ export async function doCd(reqBody: CdReqBody): Promise<CdResBody> {
     relative(rootDir, filePath).length > 0 ? relative(rootDir, filePath) : "/";
 
   // indicate that path was ok
-  return { success: true, path: reqBody.path, data: newCwd };
+  return { success: true, data: newCwd };
 }

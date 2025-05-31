@@ -7,7 +7,6 @@ import {
 } from "@/types/Terminal";
 
 const doCat: TerminalCommand = async (input: TerminalCommandInput) => {
-  // TODO: handle no argument case
   // make sure we have arguments
   if (input.argv.length !== 2) {
     return {

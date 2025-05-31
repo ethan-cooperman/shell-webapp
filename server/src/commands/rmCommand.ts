@@ -1,6 +1,6 @@
 import { unlink } from "fs/promises";
 import { RmReqBody } from "../types/requests.js";
-import { RmResBody } from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -10,7 +10,7 @@ import { AppError } from "../middleware/errorHandler.js";
  * @param reqBody object representation of this rm request
  * @returns rm response
  */
-export async function doRm(reqBody: RmReqBody): Promise<RmResBody> {
+export async function doRm(reqBody: RmReqBody): Promise<TerminalResBody> {
   // store filepath to rm
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.file);
 
@@ -30,7 +30,6 @@ export async function doRm(reqBody: RmReqBody): Promise<RmResBody> {
   // convert subDirectories into string with newlines
   return {
     success: true,
-    file: reqBody.file,
     data: "File deleted successfully",
   };
 }

@@ -1,5 +1,5 @@
 import { MkdirReqBody } from "../types/requests.js";
-import { MkdirResBody } from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -11,7 +11,7 @@ import { mkdir } from "fs/promises";
  * @param reqBody request body for this mkdir request
  * @returns mkdir response
  */
-export async function doMkdir(reqBody: MkdirReqBody): Promise<MkdirResBody> {
+export async function doMkdir(reqBody: MkdirReqBody): Promise<TerminalResBody> {
   // store filepath to mkdir
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.name);
 
@@ -32,7 +32,6 @@ export async function doMkdir(reqBody: MkdirReqBody): Promise<MkdirResBody> {
   // return succcess object
   return {
     success: true,
-    name: reqBody.name,
     data: "Directory created successfully",
   };
 }

@@ -1,5 +1,5 @@
 import { ReadReqBody } from "../types/requests.js";
-import { ReadResBody } from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -10,7 +10,7 @@ import { FileHandle, open, readFile } from "fs/promises";
  * @param reqBody object representation of this read request
  * @returns read response containing read contents
  */
-export async function doRead(reqBody: ReadReqBody): Promise<ReadResBody> {
+export async function doRead(reqBody: ReadReqBody): Promise<TerminalResBody> {
   // store filepath to read
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.file);
 
@@ -62,8 +62,5 @@ export async function doRead(reqBody: ReadReqBody): Promise<ReadResBody> {
   return {
     success: true,
     data: fileContents,
-    file: reqBody.file,
-    offset: reqBody.offset,
-    numBytes: reqBody.numBytes,
   };
 }

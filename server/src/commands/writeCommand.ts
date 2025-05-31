@@ -1,5 +1,5 @@
 import { WriteReqBody } from "../types/requests.js";
-import { WriteResBody } from "../types/responses.js";
+import { TerminalResBody } from "../types/responses.js";
 import constructFilepath from "../utils/constructFilepath.js";
 import doesPathExist from "../utils/doesPathExist.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -10,7 +10,7 @@ import { open, FileHandle } from "fs/promises";
  * @param reqBody object representation of this write request
  * @returns write response object
  */
-export async function doWrite(reqBody: WriteReqBody): Promise<WriteResBody> {
+export async function doWrite(reqBody: WriteReqBody): Promise<TerminalResBody> {
   // store filepath to write
   const filePath: string = constructFilepath(reqBody.cwd, reqBody.file);
 
@@ -72,11 +72,6 @@ export async function doWrite(reqBody: WriteReqBody): Promise<WriteResBody> {
   // return succcess object
   return {
     success: true,
-    contents: reqBody.contents,
-    file: reqBody.file,
-    offset: reqBody.offset,
-    numBytes: reqBody.numBytes,
-    append: reqBody.append,
     data: "Write successful",
   };
 }
