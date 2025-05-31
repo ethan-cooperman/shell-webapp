@@ -80,6 +80,10 @@ npm start
 - `mkdir`: Create a new directory.
 - `rmdir`: Remove an empty directory.
 
+### Other Features
+
+- **Redirecting Output**: Users can redirect the output of commands to files using the `>` operator. Input redirects are parsed, but no current commands support input redirection. -**Command History**: The application maintains a history of executed commands, allowing users to navigate through previous commands using the up and down arrow keys.
+
 ## Technologies Used
 
 - **NextJS**: For building the client-side application.
